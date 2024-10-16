@@ -54,7 +54,7 @@ docker-compose up -d
 
 Run the application:
 ```bash
-go run main.go
+go run cmd/main.go
 ```
 
 ## Usage
@@ -62,17 +62,6 @@ go run main.go
 Once the application is running, you can access the API at `http://localhost:8080` (by default). Use tools like Postman or curl to interact with the endpoints.
 
 ## Environment Variables
-
-The following environment variables are required to configure the application:
-
-| Variable     | Description                  | Default Value |
-|--------------|------------------------------|---------------|
-| DB_HOST      | PostgreSQL host              | localhost     |
-| DB_PORT      | PostgreSQL port              | 5432          |
-| DB_USER      | PostgreSQL user              | postgres      |
-| DB_PASSWORD  | PostgreSQL password          | password      |
-| DB_NAME      | PostgreSQL database name     | prontuario    |
-| PORT         | The port on which the API will run | 8080     |
 
 To set these variables, create a `./configs/config.yml` with your custom values, like:
 ```bash
