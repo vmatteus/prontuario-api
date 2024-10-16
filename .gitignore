@@ -1,4 +1,6 @@
 /prontuario
+/configs/config.yml
+sqlite.db
 
 *.exe
 *.out
