@@ -15,7 +15,7 @@ func NewAuthController() *AuthController {
 	return &AuthController{Service: application.NewAuthService()}
 }
 
-func Login(c *gin.Context) {
+func (controller *AuthController) Login(ctx *gin.Context) {
 	// //var input LoginInput
 
 	// if err := c.ShouldBindJSON(&input); err != nil {

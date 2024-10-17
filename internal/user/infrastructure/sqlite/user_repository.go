@@ -1,4 +1,4 @@
-package sqlite
+package infrastructure
 
 import (
 	"context"
@@ -22,4 +22,14 @@ func (r *UserRepository) FindUserByUsernameAndPassword(ctx context.Context, user
 		return nil, result.Error
 	}
 	return &user, nil
+}
+
+func (r *UserRepository) CreateUser(ctx context.Context, user *domain.UserModel) (*domain.UserModel, error) {
+
+	result := r.db.Create(user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return user, nil
 }

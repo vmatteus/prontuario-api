@@ -11,7 +11,7 @@ var (
 )
 
 type SqlLite struct {
-	DbPath string `mapstructure:"db_path"`
+	DbPath string `mapstructure:"dbpath"`
 }
 
 type Postgres struct {
