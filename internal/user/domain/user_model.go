@@ -15,3 +15,7 @@ type UserModel struct {
 	UpdatedAt *time.Time      `json:"updated_at" gorm:"autoUpdateTime"`
 	DeletedAt *gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }
+
+func (UserModel) TableName() string {
+	return "users"
+}

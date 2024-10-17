@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"prontuario/internal/user/application"
 	"prontuario/internal/user/application/interfaces"
-	"prontuario/internal/user/domain"
+	usecase "prontuario/internal/user/application/use_case"
+	"prontuario/internal/user/domain/dto"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,17 +20,23 @@ func NewUserController() *UserController {
 
 func (controller *UserController) Create(ctx *gin.Context) {
 
-	var request *domain.UserModel
+	var request *dto.CreateUserDtoRequest
 
 	if err := ctx.ShouldBindJSON(&request); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	user, err := controller.Service.Create(ctx, request)
+	if err := request.Validate(); err != nil {
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := usecase.CreateUserUseCase{}.Execute(*request)
 
 	if err != nil {
-		ctx.JSON(500, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{

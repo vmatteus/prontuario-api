@@ -11,9 +11,9 @@ func getRouter() *gin.Engine {
 	r := gin.Default()
 
 	authController := authController.NewAuthController()
-	userController := userController.NewUserController()
-
 	r.POST("/login", authController.Login)
+
+	userController := userController.NewUserController()
 	r.POST("/register", userController.Create)
 	return r
 }
