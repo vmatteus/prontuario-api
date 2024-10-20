@@ -4,14 +4,16 @@ import (
 	"prontuario/configs"
 	"prontuario/internal/database"
 	"prontuario/internal/user/domain"
-	infrastructure "prontuario/internal/user/infrastructure/sqlite"
+	infrastructureGorm "prontuario/internal/user/infrastructure/gorm"
 )
 
 func GetUserRepository() domain.UserRepositoryInterface {
 	config := configs.Get()
 	switch config.Database.Driver {
 	case "sqlite":
-		return infrastructure.NewUserRepository(database.DB)
+		return infrastructureGorm.NewUserRepository(database.DB)
+	case "postgres":
+		return infrastructureGorm.NewUserRepository(database.DB)
 	default:
 		return nil
 	}

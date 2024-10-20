@@ -20,6 +20,7 @@ type Postgres struct {
 	User     string `mapstructure:"user"`
 	Password string `mapstructure:"password"`
 	Database string `mapstructure:"database"`
+	Sslmode  string `mapstructure:"sslmode"`
 }
 
 type Database struct {
