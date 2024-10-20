@@ -35,7 +35,7 @@ func (controller *UserController) Create(ctx *gin.Context) {
 	user, err := usecase.CreateUserUseCase{}.Execute(*request)
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

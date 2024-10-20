@@ -33,3 +33,12 @@ func (r *UserRepository) CreateUser(ctx context.Context, user *domain.UserModel)
 
 	return user, nil
 }
+
+func (r *UserRepository) FindUserByEmail(ctx context.Context, email string) (*domain.UserModel, error) {
+	var user domain.UserModel
+	result := r.db.Where("email = ?", email).First(&user)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &user, nil
+}

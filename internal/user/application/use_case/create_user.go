@@ -22,12 +22,13 @@ func (CreateUserUseCase) Execute(createUserDtoRequest dto.CreateUserDtoRequest) 
 	}
 
 	user := &domain.UserModel{
-		Name:      createUserDtoRequest.Name,
-		Username:  createUserDtoRequest.Username,
-		Password:  passwordCrypted,
-		CreatedAt: &now,
-		UpdatedAt: &now,
-		DeletedAt: nil,
+		Name:        createUserDtoRequest.Name,
+		Email:       createUserDtoRequest.Email,
+		PhoneNumber: createUserDtoRequest.PhoneNumber,
+		Password:    passwordCrypted,
+		CreatedAt:   &now,
+		UpdatedAt:   &now,
+		DeletedAt:   nil,
 	}
 
 	userService := application.NewUserService()

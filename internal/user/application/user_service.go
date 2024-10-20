@@ -2,6 +2,7 @@ package application
 
 import (
 	"context"
+	"errors"
 	"prontuario/internal/user/domain"
 	"prontuario/internal/user/infrastructure"
 )
@@ -15,5 +16,12 @@ func NewUserService() *UserService {
 }
 
 func (service *UserService) Create(ctx context.Context, user *domain.UserModel) (*domain.UserModel, error) {
+
+	_, err := service.repo.FindUserByEmail(ctx, user.Email)
+
+	if err == nil {
+		return user, errors.New("user already exists")
+	}
+
 	return service.repo.CreateUser(ctx, user)
 }
