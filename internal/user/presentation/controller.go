@@ -27,11 +27,6 @@ func (controller *UserController) Create(ctx *gin.Context) {
 		return
 	}
 
-	if err := request.Validate(); err != nil {
-		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"error": err.Error()})
-		return
-	}
-
 	user, err := usecase.CreateUserUseCase{}.Execute(*request)
 
 	if err != nil {

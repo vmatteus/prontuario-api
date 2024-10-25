@@ -10,6 +10,11 @@ var (
 	current *Config
 )
 
+type App struct {
+	Name    string `mapstructure:"name"`
+	Version string `mapstructure:"version"`
+	Debug   bool   `mapstructure:"debug"`
+}
 type SqlLite struct {
 	DbPath string `mapstructure:"dbpath"`
 }
@@ -31,6 +36,7 @@ type Database struct {
 
 type Config struct {
 	Database *Database `mapstructure:"database"`
+	App      *App      `mapstructure:"app"`
 }
 
 func Init() (*Config, error) {

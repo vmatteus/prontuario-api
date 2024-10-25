@@ -2,6 +2,8 @@ package application
 
 import (
 	"context"
+	"errors"
+	"prontuario/internal/crypt"
 	"prontuario/internal/user/domain"
 	"prontuario/internal/user/infrastructure"
 )
@@ -15,5 +17,19 @@ func NewAuthService() *AuthService {
 }
 
 func (service *AuthService) Login(ctx context.Context, username, password string) (*domain.UserModel, error) {
-	return service.repo.FindUserByUsernameAndPassword(ctx, username, password)
+	user, err := service.repo.FindUserByEmail(ctx, username)
+
+	if err != nil {
+		return nil, err
+	}
+
+	crypt := crypt.NewCrypt()
+
+	comparasion := crypt.CompareHashAndPassword(user.Password, password)
+
+	if comparasion == nil {
+		return user, nil
+	}
+
+	return nil, errors.New("invalid password")
 }
