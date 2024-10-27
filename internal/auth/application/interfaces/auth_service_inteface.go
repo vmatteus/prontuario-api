@@ -6,5 +6,8 @@ import (
 )
 
 type AuthServiceInterface interface {
-	Login(ctx context.Context, username, password string) (*domain.UserModel, error)
+	Login(ctx context.Context, username, password string) (*domain.UserModel, string, error)
+	HashPassword(password string) (string, error)
+	CompareHashAndPassword(hashedPassword, password string) error
+	ValidateToken(token string) (*domain.UserModel, error)
 }

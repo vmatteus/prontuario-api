@@ -15,6 +15,7 @@ type App struct {
 	Version string `mapstructure:"version"`
 	Debug   bool   `mapstructure:"debug"`
 }
+
 type SqlLite struct {
 	DbPath string `mapstructure:"dbpath"`
 }
@@ -34,9 +35,14 @@ type Database struct {
 	Postgres *Postgres `mapstructure:"postgres"`
 }
 
+type Jwt struct {
+	Secret string `mapstructure:"secret"`
+}
+
 type Config struct {
 	Database *Database `mapstructure:"database"`
 	App      *App      `mapstructure:"app"`
+	Jwt      *Jwt      `mapstructure:"jwt"`
 }
 
 func Init() (*Config, error) {

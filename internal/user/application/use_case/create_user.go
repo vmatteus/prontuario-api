@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"prontuario/internal/crypt"
+	auth "prontuario/internal/auth/application"
 	"prontuario/internal/user/application"
 	"prontuario/internal/user/domain"
 	"prontuario/internal/user/domain/dto"
@@ -11,11 +11,12 @@ import (
 
 type CreateUserUseCase struct{}
 
-func (CreateUserUseCase) Execute(createUserDtoRequest dto.CreateUserDtoRequest) (*domain.UserModel, error) {
+func (useCase CreateUserUseCase) Execute(createUserDtoRequest dto.CreateUserDtoRequest) (*domain.UserModel, error) {
 
 	now := time.Now()
-	crypt := crypt.NewCrypt()
-	passwordCrypted, err := crypt.HashPassword(createUserDtoRequest.Password)
+	userService := application.NewUserService()
+	authService := auth.NewAuthService()
+	passwordCrypted, err := authService.HashPassword(createUserDtoRequest.Password)
 
 	if err != nil {
 		return nil, err
@@ -30,8 +31,6 @@ func (CreateUserUseCase) Execute(createUserDtoRequest dto.CreateUserDtoRequest) 
 		UpdatedAt:   &now,
 		DeletedAt:   nil,
 	}
-
-	userService := application.NewUserService()
 
 	userDb, err := userService.Create(context.TODO(), user)
 

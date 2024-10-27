@@ -39,3 +39,9 @@ func (controller *UserController) Create(ctx *gin.Context) {
 		"user_id": user.ID,
 	})
 }
+
+func (controller *UserController) Get(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "User found",
+	})
+}

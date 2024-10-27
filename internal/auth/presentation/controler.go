@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"log"
 	"net/http"
 	"prontuario/internal/auth/application"
 	"prontuario/internal/auth/application/interfaces"
@@ -11,6 +12,13 @@ import (
 
 type AuthController struct {
 	Service interfaces.AuthServiceInterface
+}
+
+type ResposeLogin struct {
+	Name        string `json:"name"`
+	Email       string `json:"email"`
+	PhoneNumber string `json:"PhoneNumber"`
+	Token       string `json:"token"`
 }
 
 func NewAuthController() *AuthController {
@@ -26,22 +34,41 @@ func (controller *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	_, err := controller.Service.Login(ctx, request.Email, request.Password)
+	user, token, err := controller.Service.Login(ctx, request.Email, request.Password)
 
 	if err != nil {
+		log.Println(err)
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "login error"})
+		return
 	}
 
-	// //var input LoginInput
+	ResposeLogin := ResposeLogin{
+		Name:        user.Name,
+		Email:       user.Email,
+		PhoneNumber: user.PhoneNumber,
+		Token:       token,
+	}
 
-	// if err := c.ShouldBindJSON(&input); err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"error": "Campos inválidos"})
-	// 	return
-	// }
+	ctx.JSON(http.StatusOK, gin.H{"data": ResposeLogin})
+}
 
-	// if input.Username == "admin" && input.Password == "password" {
-	// 	c.JSON(http.StatusOK, gin.H{"message": "Login realizado com sucesso"})
-	// } else {
-	// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "Credenciais inválidas"})
-	// }
+func (controller *AuthController) AuthMiddleware() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		token := ctx.GetHeader("Authorization")
+		if token == "" {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token not found"})
+			ctx.Abort()
+			return
+		}
+
+		_, err := controller.Service.ValidateToken(token)
+
+		if err != nil {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "token invalid"})
+			ctx.Abort()
+			return
+		}
+
+		ctx.Next()
+	}
 }
