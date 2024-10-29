@@ -41,7 +41,10 @@ func (controller *UserController) Create(ctx *gin.Context) {
 }
 
 func (controller *UserController) Get(ctx *gin.Context) {
+	id, _ := ctx.Params.Get("id")
+
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "User found",
+		"user_id": id,
 	})
 }

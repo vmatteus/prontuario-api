@@ -12,6 +12,13 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - protuario_network
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - protuario_network
 networks:
   protuario_network:
     driver: bridge

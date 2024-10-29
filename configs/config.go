@@ -39,10 +39,15 @@ type Jwt struct {
 	Secret string `mapstructure:"secret"`
 }
 
+type Session struct {
+	Driver string `mapstructure:"driver"`
+}
+
 type Config struct {
 	Database *Database `mapstructure:"database"`
 	App      *App      `mapstructure:"app"`
 	Jwt      *Jwt      `mapstructure:"jwt"`
+	Session  *Session  `mapstructure:"session"`
 }
 
 func Init() (*Config, error) {
